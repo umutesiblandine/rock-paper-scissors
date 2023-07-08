@@ -92,3 +92,64 @@ function playRound(playerSelection, computerSelection){
 	}
 
 }
+
+/*** Function for a 5 round Game **************/
+
+function game (){
+	let playerSelection; //contains the player's choice of the game
+	let computerSelection; // contains the computer's choice of the game
+
+	for(let i=1;i<=5;i++){
+		playerSelection = prompt(`game round: ${i}. What is your choice: Rock, Paper or, Scissors ?`).toLowerCase();
+		if(gameSymbols.includes(playerSelection)){
+			computerSelection = getComputerChoice();
+			console.log(playRound(playerSelection,computerSelection));
+
+		}
+		/******* In case the player enters the wrong choice, an alert pops up to inform them and allows them
+		to reenter the choice again. Execution of the game holds until they enter the correct choice*********/
+		else{
+			alert('You entered the wrong choice. please make sure you are typing your respose correctly among the 3 choices presented to you');
+			i--;
+		}
+	}
+
+	/*A line that marks the first section, which displays the winner of each round.*/
+	console.log('--------------------------------------------------------------------');
+	let PlayerWins=0;
+	let computerWins=0;
+	let ties = 0;
+	for(let prop in winner){
+	 	if(winner[prop]['player']=="Computer"){
+	 		computerWins++;
+ 		}
+	 	else if(winner[prop]['player']=="Player"){
+	 		PlayerWins++;
+	 	}
+	 	else{
+			ties ++;
+	 	}
+	 }
+
+	console.log('Player wins=  ',PlayerWins);
+	console.log('computer wins=  ', computerWins);
+	console.log('ties=  ' ,ties);
+
+	/*   A line that marks the second Section, which displays the summary of each player after 5 rounds  *******/
+	console.log('--------------------------------------------------------------------');
+
+	/*This is the third section, it displays the Winner of the GAME*/
+
+	if(PlayerWins>computerWins){
+		console.log("The winner of the Game is:  Player!");
+	}
+	else if(PlayerWins<computerWins){
+		console.log("The winner of the Game is:  Computer!")
+	}
+	else{
+		console.log("THERE IS NO WINNER! WE HAVE A TIE.");
+	}
+	
+}
+
+game();
