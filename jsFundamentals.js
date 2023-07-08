@@ -18,34 +18,38 @@ function getComputerChoice(){
 		return "rock";
 	}	
 }
+let Player="Player";
+let Computer="Computer";
 
 /************     Function for a single Round game. *****************
 The value in the parentesis() in the return statement indicates either the value selected by the Player or Computer
 as thier choice.  OR the player of the game, either the Computer or the userPlayer.)***********************/
 
+/* playerSelection contains the player's choice of the game
+ computerSelection contains the computer's choice of the game */
 
-function playRound(playerSelection, computerSelection){
+function playRound(playerSelection, computerSelection,i){
 
 	if(playerSelection==computerSelection){
 		winner.push({winner:'Tie'});
-		return "THERE IS NO WINNER! WE HAVE A TIE";
+		return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> Round: ${i}. THERE IS NO WINNER! WE HAVE A TIE.`;
 	}
 	else if(playerSelection==rock || computerSelection==rock){
 		if(playerSelection==rock && computerSelection==paper){
 			 winner.push({winner:paper,player:'Computer'});
-			 return "The winner is: Computer(paper)! Because Paper beats Rock(Player).";
+			 return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
 		}
 		else if(playerSelection==paper && computerSelection==rock){
 			winner.push({winner:paper,player:'Player'});
-			return "The winner is: Player(paper)! Because Paper beats Rock(Computer).";
+			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
 		}
 		else if(playerSelection==rock && computerSelection==scissors){
 			winner.push({winner:rock,player:'Player'});
-			return "The winner is: Player(rock)! Because Rock beats Scissors(Computer)."
+			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
 		}
 		else if(playerSelection==scissors && computerSelection==rock){
 			winner.push({winner:rock,player:'Computer'});
-			return "The winner is Computer(rock)! Because Rock beats Scissors(Player)."
+			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
 		}
 	}
 
@@ -53,19 +57,19 @@ function playRound(playerSelection, computerSelection){
 	else if(playerSelection==paper || computerSelection==paper){
 		if(playerSelection==paper && computerSelection==rock){
 			winner.push({winner:paper,player:'Player'});
-			return "The winner is: Player(paper)! Because Paper beats Rock(Computer)."
+			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
 		}
 		else if(playerSelection==rock && computerSelection==paper){
 			winner.push({winner:paper,player:'Computer'});
-			return "The winner is: Computer(paper)! Because Paper beats Rock(Player)."
+			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
 		}
 		else if(playerSelection==paper && computerSelection==scissors){
 			winner.push({winner:scissors,player:'Computer'});
-			return "The winner is: Computer(scissors)! Because Scissors beats Paper(Player)."
+			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
 		}
 		else if(playerSelection==scissors && computerSelection==paper){
 			winner.push({winner:scissors,player:'Player'});
-			return "The winner is: Player(scissors)! Because Scissors beats Paper(Computer).";
+			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
 		}
 	}
 
@@ -74,36 +78,39 @@ function playRound(playerSelection, computerSelection){
 		if(playerSelection==scissors||computerSelection==scissors){
 			if(playerSelection==scissors && computerSelection==rock){
 				winner.push({winner:rock,player:'Computer'});
-				return "The winner is: Computer(rock)! Because Rock beats Scissors(Player).";
+				return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
+
 			}
 			else if(playerSelection==rock && computerSelection==scissors){
 				winner.push({winner:rock,player:'Player'});
-				return "The winner is: Player(rock)! Because Rock beats Scissors(Computer).";
+				return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
+
 			}
 			else if(playerSelection==scissors && computerSelection==paper){
 				winner.push({winner:scissors,player:'Player'});
-				return "The winner is: Player(scissors)! Because Scissors beats Paper(Computer)."
+				return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
+
 			}
 			else if(playerSelection==paper && computerSelection==scissors){
 				winner.push({winner:scissors,player:'Computer'});
-				return "The winner is: Computer(scissors)! Because Scissors beats Paper(Player).";
+				return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
+
 			}
 		}
 	}
 
 }
 
+
 /*** Function for a 5 round Game **************/
 
 function game (){
-	let playerSelection; //contains the player's choice of the game
-	let computerSelection; // contains the computer's choice of the game
 
 	for(let i=1;i<=5;i++){
 		playerSelection = prompt(`game round: ${i}. What is your choice: Rock, Paper or, Scissors ?`).toLowerCase();
 		if(gameSymbols.includes(playerSelection)){
 			computerSelection = getComputerChoice();
-			console.log(playRound(playerSelection,computerSelection));
+			console.log(playRound(playerSelection,computerSelection,i));
 
 		}
 		/******* In case the player enters the wrong choice, an alert pops up to inform them and allows them
