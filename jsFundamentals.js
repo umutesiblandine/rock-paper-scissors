@@ -2,9 +2,23 @@ let gameSymbols = ['rock','paper','scissors'];
 let rock ="rock";
 let paper = "paper";
 let scissors = "scissors";
-let winner =[];
+let winner;
+let winnersRecord =[];
+let Player="Player";
+let Computer="Computer";
+let playerSelection,computerSelection;
+let playerChoices = document.querySelector('ul');
+let outputDiv = document.getElementById('output');
+let i=1;
+let summary_of_the_game;
+let winner_of_the_game;
+let winnerOfTheGame
+let PlayerWins=0;
+let computerWins=0;
+let ties=0;
+let blinkingParagraph = document.querySelector('h2');
 
-/*Function that gets the computer's choice */
+/*Function that gets the computer's choice of Play*/
 
 function getComputerChoice(){
 	let pick = Math.floor(Math.random() * 12);
@@ -18,58 +32,142 @@ function getComputerChoice(){
 		return "rock";
 	}	
 }
-let Player="Player";
-let Computer="Computer";
 
-/************     Function for a single Round game. *****************
-The value in the parentesis() in the return statement indicates either the value selected by the Player or Computer
-as thier choice.  OR the player of the game, either the Computer or the userPlayer.)***********************/
+playerChoices.addEventListener('click',runEvent);
 
-/* playerSelection contains the player's choice of the game
- computerSelection contains the computer's choice of the game */
+
+/*====  Function that runs whenever a Rock,Paper,Scissors button is clicked When a user makes a play*/
+
+function runEvent(e){
+	//logic for having five rounds of play which makes a game
+    if(i<=5){
+        playerSelection=e.target.id;
+        computerSelection=getComputerChoice();
+			
+        //create a div element to display for a single play results
+        
+        let div = document.createElement('div');
+        div.innerHTML=`<span>Round: ${i}</span><br>${Player}'s Choice: ${playerSelection}<br>${Computer}'s Choice: ${computerSelection} <br>${playRound(playerSelection,computerSelection,i)}`;
+        outputDiv.appendChild(div);
+			
+        i++;
+    }
+    //Logic that displays the summary of each round play and the the winner after five rounds
+    if(i==6){
+       	summary_of_the_game = document.getElementById('summary-of-the-game');
+        for(let prop in winnersRecord){
+			 if(winnersRecord[prop]['player']=="Computer"){
+			     computerWins++;
+		 	}
+            else if(winnersRecord[prop]['player']=="Player"){
+			     PlayerWins++;
+            }
+            else{
+				ties ++;
+            }
+        }
+        
+        summary_of_the_game.innerHTML=`<p>PlayerWins= ${PlayerWins}</p><p>computerWins= ${computerWins}</p><p>Ties= ${ties}</p>`;
+			
+        if(PlayerWins>computerWins){
+            winner_of_the_game= `The winner of the Game is:  ${Player}!`;
+        }
+        else if(PlayerWins<computerWins){
+            winner_of_the_game = `The winner of the Game is:  ${Computer}!`;
+        }
+        else{
+            winner_of_the_game = `THERE IS NO WINNER! WE HAVE A TIE.`; 
+        }
+            
+        winnerOfTheGame =document.getElementById('winner-of-the-game');
+        winnerOfTheGame.innerHTML=`<h3>${winner_of_the_game}</h3>`;
+        i++;
+
+        //Blinking div that announces that the game is over after five rounds of play
+
+		let counter =0;
+		let clearinterval = setInterval(count,400);
+		function count(){
+			blinkingParagraph.classList.toggle('red');
+			counter++;
+			if(counter>5){
+			clearInterval(clearinterval);
+			}
+		}
+		blinkingParagraph.classList='red';
+    }
+
+}
+
+
+/************     Function for a single Round game.     *****************/
+
+/* playerSelection receives the player's choice of the game
+ computerSelection receives the computer's choice of the game */
 
 function playRound(playerSelection, computerSelection,i){
 
 	if(playerSelection==computerSelection){
-		winner.push({winner:'Tie'});
-		return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> Round: ${i}. THERE IS NO WINNER! WE HAVE A TIE.`;
+		
+		winner = `No Winner! We have a TIE.`;
+		winnersRecord.push({winner:'Tie'});
+		return winner;
+		
 	}
 	else if(playerSelection==rock || computerSelection==rock){
 		if(playerSelection==rock && computerSelection==paper){
-			 winner.push({winner:paper,player:'Computer'});
-			 return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
+			
+			 winner = `${Computer}! ${computerSelection} beats ${playerSelection}.`;
+			 winnersRecord.push({winner:paper,player:'Computer'});
+			 return `Winner is: ${winner}`;
+			 
 		}
 		else if(playerSelection==paper && computerSelection==rock){
-			winner.push({winner:paper,player:'Player'});
-			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
+			
+			winner=`${Player}! ${playerSelection} beats ${computerSelection}.`;
+			winnersRecord.push({winner:paper,player:'Player'});
+			return `Winner is: ${winner}`;
+			
 		}
 		else if(playerSelection==rock && computerSelection==scissors){
-			winner.push({winner:rock,player:'Player'});
-			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
+			
+			winner= `${Player}! ${playerSelection} beats ${computerSelection}.`;
+			winnersRecord.push({winner:rock,player:'Player'});
+			return `Winner is: ${winner}`;
+			
 		}
 		else if(playerSelection==scissors && computerSelection==rock){
-			winner.push({winner:rock,player:'Computer'});
-			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
+			
+			winner = `${Computer}! ${computerSelection} beats ${playerSelection}.`;
+			winnersRecord.push({winner:rock,player:'Computer'});
+			return `Winner is: ${winner}`;
+			
 		}
 	}
 
 
 	else if(playerSelection==paper || computerSelection==paper){
 		if(playerSelection==paper && computerSelection==rock){
-			winner.push({winner:paper,player:'Player'});
-			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
+		
+			winner = `${Player}! ${playerSelection} beats ${computerSelection}.`;
+			winnersRecord.push({winner:paper,player:'Player'});
+			return `Winner is: ${winner}`;
+			
 		}
 		else if(playerSelection==rock && computerSelection==paper){
-			winner.push({winner:paper,player:'Computer'});
-			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
+			winner = `${Computer}! ${computerSelection} beats ${playerSelection}.`;
+			winnersRecord.push({winner:paper,player:'Computer'});
+			return `Winner is: ${winner}`;
 		}
 		else if(playerSelection==paper && computerSelection==scissors){
-			winner.push({winner:scissors,player:'Computer'});
-			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
+			winner = `${Computer}! ${computerSelection} beats ${playerSelection}.`;
+			winnersRecord.push({winner:scissors,player:'Computer'});
+			return `Winner is: ${winner}`;
 		}
 		else if(playerSelection==scissors && computerSelection==paper){
-			winner.push({winner:scissors,player:'Player'});
-			return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
+			winner = `${Player}! ${playerSelection} beats ${computerSelection}.`;
+			winnersRecord.push({winner:scissors,player:'Player'});
+			return `Winner is: ${winner}`;
 		}
 	}
 
@@ -77,23 +175,27 @@ function playRound(playerSelection, computerSelection,i){
 	else{
 		if(playerSelection==scissors||computerSelection==scissors){
 			if(playerSelection==scissors && computerSelection==rock){
-				winner.push({winner:rock,player:'Computer'});
-				return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
+				winner = `${Computer}! ${computerSelection} beats ${playerSelection}.`;
+				winnersRecord.push({winner:rock,player:'Computer'});
+				return `Winner is: ${winner}`;
 
 			}
 			else if(playerSelection==rock && computerSelection==scissors){
-				winner.push({winner:rock,player:'Player'});
-				return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
+				winner = `${Player}! ${playerSelection} beats ${computerSelection}.`;
+				winnersRecord.push({winner:rock,player:'Player'});
+				return `Winner is: ${winner}`;
 
 			}
 			else if(playerSelection==scissors && computerSelection==paper){
-				winner.push({winner:scissors,player:'Player'});
-				return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Player}! ${playerSelection} beats ${computerSelection}.`;
+				winner = `${Player}! ${playerSelection} beats ${computerSelection}.`;
+				winnersRecord.push({winner:scissors,player:'Player'});
+				return `Winner is: ${winner}`;
 
 			}
 			else if(playerSelection==paper && computerSelection==scissors){
-				winner.push({winner:scissors,player:'Computer'});
-				return `${Player}'s Choice was: ${playerSelection}, ${Computer}'s Choice was: ${computerSelection}. ---> The winner of Round: ${i} is: ${Computer}! ${computerSelection} beats ${playerSelection}.`;
+				winner = `${Computer}! ${computerSelection} beats ${playerSelection}.`;
+				winnersRecord.push({winner:scissors,player:'Computer'});
+				return `Winner is: ${winner}`;
 
 			}
 		}
@@ -101,62 +203,27 @@ function playRound(playerSelection, computerSelection,i){
 
 }
 
-
-/*** Function for a 5 round Game **************/
-
-function game (){
-
-	for(let i=1;i<=5;i++){
-		playerSelection = prompt(`game round: ${i}. What is your choice: Rock, Paper or, Scissors ?`).toLowerCase();
-		if(gameSymbols.includes(playerSelection)){
-			computerSelection = getComputerChoice();
-			console.log(playRound(playerSelection,computerSelection,i));
-
-		}
-		/******* In case the player enters the wrong choice, an alert pops up to inform them and allows them
-		to reenter the choice again. Execution of the game holds until they enter the correct choice*********/
-		else{
-			alert('You entered the wrong choice. please make sure you are typing your respose correctly among the 3 choices presented to you');
-			i--;
-		}
-	}
-
-	/*A line that marks the first section, which displays the winner of each round.*/
-	console.log('--------------------------------------------------------------------');
-	let PlayerWins=0;
-	let computerWins=0;
-	let ties = 0;
-	for(let prop in winner){
-	 	if(winner[prop]['player']=="Computer"){
-	 		computerWins++;
- 		}
-	 	else if(winner[prop]['player']=="Player"){
-	 		PlayerWins++;
-	 	}
-	 	else{
-			ties ++;
-	 	}
-	 }
-
-	console.log('Player wins=  ',PlayerWins);
-	console.log('computer wins=  ', computerWins);
-	console.log('ties=  ' ,ties);
-
-	/*   A line that marks the second Section, which displays the summary of each player after 5 rounds  *******/
-	console.log('--------------------------------------------------------------------');
-
-	/*This is the third section, it displays the Winner of the GAME*/
-
-	if(PlayerWins>computerWins){
-		console.log("The winner of the Game is:  Player!");
-	}
-	else if(PlayerWins<computerWins){
-		console.log("The winner of the Game is:  Computer!")
-	}
-	else{
-		console.log("THERE IS NO WINNER! WE HAVE A TIE.");
-	}
-	
+function playAgain(){
+	blinkingParagraph.classList.toggle('red');
+    outputDiv = document.getElementById('output');
+    let divChildren = outputDiv.children;
+    let summarOfGame = document.getElementById('summary-of-the-game');
+    let winnerOfGame = document.getElementById('winner-of-the-game');
+    while(outputDiv.firstElementChild!=null){
+        outputDiv.removeChild(outputDiv.firstElementChild);
+    }
+    while(summarOfGame.firstElementChild!=null){
+        summarOfGame.removeChild(summarOfGame.firstElementChild);
+    }
+    while(winnerOfGame.firstElementChild!=null){
+        winnerOfGame.removeChild(winnerOfGame.firstElementChild);
+    }
+    i=1;
+    PlayerWins=0;
+    computerWins=0;
+    ties=0;
+    winnersRecord=[];
 }
 
-game();
+let anotherGame = document.getElementById('play-again');
+anotherGame.addEventListener('click',playAgain);
